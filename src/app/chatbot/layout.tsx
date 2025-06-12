@@ -13,20 +13,15 @@ export default function ChatbotLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={afacad.variable}>
-      <head>
-        <style>{`
-          html, body {
-            background: transparent !important;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            font-family: var(--font-afacad-flux), sans-serif;
-          }
-        `}</style>
-      </head>
-      <body className="font-afacad-flux">{children}</body>
-    </html>
+    <div className={`${afacad.variable} font-afacad-flux`} style={{
+      background: "transparent",
+      margin: 0,
+      padding: 0,
+      height: "100%",
+      overflow: "hidden",
+      fontFamily: "var(--font-afacad-flux), sans-serif",
+    }}>
+      {children}
+    </div>
   )
 }

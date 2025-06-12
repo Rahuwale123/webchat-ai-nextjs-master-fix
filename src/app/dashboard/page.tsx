@@ -42,57 +42,57 @@ export default function DashboardPage() {
 
   // Progress tracking function
   useEffect(() => {
-    let interval: NodeJS.Timeout
+  let interval: NodeJS.Timeout
 
-    if (currentTaskId && showLoader) {
-      const checkProgress = async () => {
-        try {
-          const response = await fetch(`${API_BASE_URL}/scraping-progress/${currentTaskId}`)
-          if (response.ok) {
-            const data = await response.json()
-            console.log("Progress data:", data)
+  if (currentTaskId && showLoader) {
+    const checkProgress = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/scraping-progress/${currentTaskId}`)
+        if (response.ok) {
+          const data = await response.json()
+          console.log("Progress data:", data)
 
-            if (data.status === "completed" || data.is_completed) {
-              clearInterval(interval)
-              setShowLoader(false)
-              setShowResult(true)
+          if (data.status === "completed" || data.is_completed) {
+            clearInterval(interval)
+            setShowLoader(false)
+            setShowResult(true)
 
-              // Show completion toast only once
-              if (!hasShownCompletionToast) {
-                toast.success("Chatbot Created!", "Your AI chatbot is ready to use!")
-                setHasShownCompletionToast(true)
-              }
-
-              // Save chatbot data
-              const chatbotData = {
-                userId: user?.id,
-                createdAt: new Date().toISOString(),
-                ...data,
-              }
-              localStorage.setItem(`chatbot_${user?.id}`, JSON.stringify(chatbotData))
-              setExistingChatbot(chatbotData)
-            } else if (data.status === "error" || data.error) {
-              clearInterval(interval)
-              setShowLoader(false)
-              toast.error("Processing Failed", data.error || "An error occurred during processing")
+            // ✅ Show toast only if not shown before (persistent across reloads)
+            const toastKey = `chatbotToastShown_${user?.id}`
+            if (!localStorage.getItem(toastKey)) {
+              toast.success("Chatbot Created!", "Your AI chatbot is ready to use!")
+              localStorage.setItem(toastKey, "true")
             }
+
+            // Save chatbot data
+            const chatbotData = {
+              userId: user?.id,
+              createdAt: new Date().toISOString(),
+              ...data,
+            }
+            localStorage.setItem(`chatbot_${user?.id}`, JSON.stringify(chatbotData))
+            setExistingChatbot(chatbotData)
+          } else if (data.status === "error" || data.error) {
+            clearInterval(interval)
+            setShowLoader(false)
+            toast.error("Processing Failed", data.error || "An error occurred during processing")
           }
-        } catch (error) {
-          console.error("Error checking progress:", error)
         }
-      }
-
-      // Check immediately and then every 3 seconds
-      checkProgress()
-      interval = setInterval(checkProgress, 3000)
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval)
+      } catch (error) {
+        console.error("Error checking progress:", error)
       }
     }
-  }, [currentTaskId, showLoader, user?.id, hasShownCompletionToast])
+
+    checkProgress()
+    interval = setInterval(checkProgress, 3000)
+  }
+
+  return () => {
+    if (interval) {
+      clearInterval(interval)
+    }
+  }
+}, [currentTaskId, showLoader, user?.id])
 
   if (isLoading) {
     return (
