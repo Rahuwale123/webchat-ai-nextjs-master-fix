@@ -356,7 +356,7 @@ const ChatBot: React.FC<ChatBotProps> = ({
                           : "bg-white text-gray-800 border-gray-200 shadow-md"
                       }`}
                     >
-                      <div className="text-xs leading-relaxed font-medium">
+                      <div className=" leading-relaxed font-medium">
                         {message.isUser ? message.text : formatMessage(message.text)}
                       </div>
                     </div>
@@ -408,7 +408,7 @@ const ChatBot: React.FC<ChatBotProps> = ({
                             style={{ animationDelay: "0.2s" }}
                           ></div>
                         </div>
-                        <span className="text-xs text-gray-500 font-medium">AI is typing...</span>
+                        <span className="text-sm text-gray-500">AI is typing...</span>
                       </div>
                     </div>
                   </div>
@@ -428,7 +428,7 @@ const ChatBot: React.FC<ChatBotProps> = ({
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type your question..."
-                className={`flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 ${currentTheme.focusRing} text-xs font-medium placeholder-gray-400 shadow-sm`}
+                className={`flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 ${currentTheme.focusRing} text-sm font-medium placeholder-gray-400 shadow-sm`}
                 disabled={isLoading}
               />
               <button
