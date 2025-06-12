@@ -38,7 +38,7 @@ const baseUrl = getBaseUrl()
   }
 
   const testChatbot = () => {
-    const chatbotUrl = `http://localhost:3000/chatbot?collection_name=${userId}`
+    const chatbotUrl = `${baseUrl}/chatbot?collection_name=${userId}`
     window.open(chatbotUrl, "_blank")
   }
 
