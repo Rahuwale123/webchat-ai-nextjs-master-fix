@@ -8,10 +8,18 @@ interface ExistingChatbotProps {
   userId: string
   onShowResult: () => void
 }
+const getBaseUrl = () => {
+  if (typeof window !== "undefined") {
+    return window.location.origin
+  }
+  return "http://localhost:3000" // Fallback for SSR or unexpected cases
+}
+
+const baseUrl = getBaseUrl()
 
 export default function ExistingChatbot({ chatbot, userId, onShowResult }: ExistingChatbotProps) {
   const testChatbot = () => {
-    window.open(`http://localhost:8080?collection_name=${userId}`, "_blank")
+    window.open(`${baseUrl}?collection_name=${userId}`, "_blank")
   }
 
   return (
