@@ -66,10 +66,15 @@ export default function ProgressSection({ taskId, onComplete }: ProgressSectionP
 
   useEffect(() => {
     let interval: NodeJS.Timeout
-
+  const token = localStorage.getItem("authToken")
+  
     const fetchProgress = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/scraping-progress/${taskId}`)
+        const response = await fetch(`${API_BASE_URL}/scraping-progress/${taskId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
         if (response.ok) {
           const data: ProgressData = await response.json()
           console.log("Progress data:", data) // Debug log
