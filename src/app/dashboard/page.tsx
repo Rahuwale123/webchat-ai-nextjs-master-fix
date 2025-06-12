@@ -43,11 +43,16 @@ export default function DashboardPage() {
   // Progress tracking function
   useEffect(() => {
   let interval: NodeJS.Timeout
+  const token = localStorage.getItem("authToken")
 
-  if (currentTaskId && showLoader) {
-    const checkProgress = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/scraping-progress/${currentTaskId}`)
+    if (currentTaskId && showLoader) {
+      const checkProgress = async () => {
+        try {
+        const response = await fetch(`${API_BASE_URL}/scraping-progress/${currentTaskId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         if (response.ok) {
           const data = await response.json()
           console.log("Progress data:", data)
